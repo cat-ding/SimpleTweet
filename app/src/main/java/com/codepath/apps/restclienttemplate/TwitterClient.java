@@ -33,6 +33,10 @@ public class TwitterClient extends OAuthBaseClient {
 	// See https://developer.chrome.com/multidevice/android/intents
 	public static final String REST_CALLBACK_URL_TEMPLATE = "intent://%s#Intent;action=android.intent.action.VIEW;scheme=%s;package=%s;S.browser_fallback_url=%s;end";
 
+	// API endpoints
+	public static final String HOME_TIMELINE_ENDPOINT = "statuses/home_timeline.json";
+	public static final String UPDATE_ENDPOINT = "statuses/update.json";
+
 	public TwitterClient(Context context) {
 		super(context, REST_API_INSTANCE,
 				REST_URL,
@@ -45,7 +49,7 @@ public class TwitterClient extends OAuthBaseClient {
 
 	// DEFINE METHODS for different API endpoints here
 	public void getHomeTimeline(JsonHttpResponseHandler handler) {
-		String apiUrl = getApiUrl("statuses/home_timeline.json");
+		String apiUrl = getApiUrl(HOME_TIMELINE_ENDPOINT);
 		// Can specify query string params directly or through RequestParams.
 		RequestParams params = new RequestParams();
 		params.put("count", 25);
@@ -54,7 +58,7 @@ public class TwitterClient extends OAuthBaseClient {
 	}
 
 	public void getNextPageOfTweets(JsonHttpResponseHandler handler, long maxId) {
-		String apiUrl = getApiUrl("statuses/home_timeline.json");
+		String apiUrl = getApiUrl(HOME_TIMELINE_ENDPOINT);
 		// Can specify query string params directly or through RequestParams.
 		RequestParams params = new RequestParams();
 		params.put("count", 25);
@@ -63,7 +67,7 @@ public class TwitterClient extends OAuthBaseClient {
 	}
 
 	public void publishTweet(String tweetContent, JsonHttpResponseHandler handler) {
-		String apiUrl = getApiUrl("statuses/update.json");
+		String apiUrl = getApiUrl(UPDATE_ENDPOINT);
 		// Can specify query string params directly or through RequestParams.
 		RequestParams params = new RequestParams();
 		params.put("status", tweetContent);
