@@ -51,10 +51,10 @@ public class ComposeActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 int tweetLength = etCompose.getText().toString().length();
-                int charsLeft = 280 - tweetLength;
+                int charsLeft = MAX_TWEET_LENGTH - tweetLength;
                 if (charsLeft >= 0)
                     tvCount.setTextColor(Color.BLACK);
-                if (charsLeft < 0)
+                else
                     tvCount.setTextColor(Color.RED);
                 String charsLeftMessage = Integer.toString(charsLeft) + " characters left";
                 tvCount.setText(charsLeftMessage);
