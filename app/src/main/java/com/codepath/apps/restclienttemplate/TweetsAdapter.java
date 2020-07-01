@@ -1,9 +1,12 @@
 package com.codepath.apps.restclienttemplate;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -72,6 +75,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         TextView tvScreenName;
         TextView tvRelativeTime;
         ImageView ivMedia;
+        Button btnReply;
 
         // this itemView represents one row in the recycler view (item_tweet)
         public ViewHolder(@NonNull View itemView) {
@@ -81,11 +85,13 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             tvScreenName = itemView.findViewById(R.id.tvScreenName);
             tvRelativeTime = itemView.findViewById(R.id.tvRelativeTime);
             ivMedia = itemView.findViewById(R.id.ivMedia);
+            btnReply = itemView.findViewById(R.id.btnReply);
         }
 
         public void bind(Tweet tweet) {
+            final String screenName = tweet.user.screenName;
             tvBody.setText(tweet.body);
-            tvScreenName.setText(tweet.user.screenName);
+            tvScreenName.setText(screenName);
             tvRelativeTime.setText(tweet.relativeTime);
 
             Glide.with(context).load(tweet.user.profileImageUrl).transform(new RoundedCorners(RADIUS)).into(ivProfileImage);
@@ -93,6 +99,16 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                 Glide.with(context).load(tweet.mediaImageUrl).transform(new RoundedCorners(RADIUS)).into(ivMedia);
             else
                 ivMedia.setVisibility(View.GONE);
+
+            btnReply.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // intent to go to ComposeActivity
+                    Intent intent = new Intent(context, ComposeActivity.class);
+                    intent.putExtra("replyScreenName", screenName);
+                    context.startActivity(intent);
+                }
+            });
         }
     }
 }

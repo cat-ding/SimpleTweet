@@ -43,6 +43,12 @@ public class ComposeActivity extends AppCompatActivity {
         btnTweet = findViewById(R.id.btnTweet);
         tvCount = findViewById(R.id.tvCount);
 
+        if (getIntent().hasExtra("replyScreenName")) {
+            final String replyScreenName = getIntent().getStringExtra("replyScreenName");
+            etCompose.setText("@" + replyScreenName);
+            updateCharsLeft();
+        }
+
         etCompose.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -50,14 +56,7 @@ public class ComposeActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                int tweetLength = etCompose.getText().toString().length();
-                int charsLeft = MAX_TWEET_LENGTH - tweetLength;
-                if (charsLeft >= 0)
-                    tvCount.setTextColor(Color.BLACK);
-                else
-                    tvCount.setTextColor(Color.RED);
-                String charsLeftMessage = Integer.toString(charsLeft) + " characters left";
-                tvCount.setText(charsLeftMessage);
+                updateCharsLeft();
             }
 
             @Override
@@ -103,5 +102,16 @@ public class ComposeActivity extends AppCompatActivity {
                 });
             }
         });
+    }
+
+    private void updateCharsLeft() {
+        int tweetLength = etCompose.getText().toString().length();
+        int charsLeft = MAX_TWEET_LENGTH - tweetLength;
+        if (charsLeft >= 0)
+            tvCount.setTextColor(Color.BLACK);
+        else
+            tvCount.setTextColor(Color.RED);
+        String charsLeftMessage = Integer.toString(charsLeft) + " characters left";
+        tvCount.setText(charsLeftMessage);
     }
 }

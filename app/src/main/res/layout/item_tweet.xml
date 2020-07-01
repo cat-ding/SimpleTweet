@@ -32,11 +32,11 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvRelativeTime"
         android:layout_marginStart="5dp"
-        android:layout_marginTop="-3dp"
+        android:layout_marginTop="3dp"
         android:layout_toEndOf="@+id/ivProfileImage"
-        tools:text="This is my tweet!"
         android:autoLink="all"
-        android:linksClickable="true"/>
+        android:linksClickable="true"
+        tools:text="This is my tweet!" />
 
     <TextView
         android:id="@+id/tvRelativeTime"
@@ -58,4 +58,17 @@
         android:layout_marginBottom="5dp"
         android:layout_toEndOf="@+id/ivProfileImage"
         tools:srcCompat="@tools:sample/avatars" />
+
+    <Button
+        android:id="@+id/btnReply"
+        android:layout_width="56dp"
+        android:layout_height="37dp"
+        android:layout_below="@+id/ivMedia"
+        android:layout_alignStart="@+id/tvScreenName"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="0dp"
+        android:text="Reply"
+        android:textSize="9sp" />
+
 </RelativeLayout>
