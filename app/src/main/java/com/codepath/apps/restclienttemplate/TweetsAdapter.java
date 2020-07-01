@@ -20,6 +20,7 @@ import java.util.List;
 
 public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder> {
 
+    public static final int RADIUS = 30;
     Context context;
     List<Tweet> tweets;
 
@@ -87,10 +88,9 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             tvScreenName.setText(tweet.user.screenName);
             tvRelativeTime.setText(tweet.relativeTime);
 
-            int radius = 30; // for rounded corners
-            Glide.with(context).load(tweet.user.profileImageUrl).transform(new RoundedCorners(radius)).into(ivProfileImage);
+            Glide.with(context).load(tweet.user.profileImageUrl).transform(new RoundedCorners(RADIUS)).into(ivProfileImage);
             if (tweet.mediaImageUrl != null)
-                Glide.with(context).load(tweet.mediaImageUrl).transform(new RoundedCorners(radius)).into(ivMedia);
+                Glide.with(context).load(tweet.mediaImageUrl).transform(new RoundedCorners(RADIUS)).into(ivMedia);
             else
                 ivMedia.setVisibility(View.GONE);
         }
