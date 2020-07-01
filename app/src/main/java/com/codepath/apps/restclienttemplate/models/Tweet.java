@@ -21,6 +21,7 @@ public class Tweet {
     public long id;
     public User user;
     public String relativeTime;
+    public String mediaImageUrl;
 
     // empty constructor needed by the Parceler library
     public Tweet() {
@@ -33,6 +34,13 @@ public class Tweet {
         tweet.id = jsonObject.getLong("id");
         tweet.user = User.fromJSON(jsonObject.getJSONObject("user"));
         tweet.relativeTime = getRelativeTimeAgo(jsonObject.getString("created_at"));
+
+        // Check if media exists
+        JSONObject entities = jsonObject.getJSONObject("entities");
+        if (entities.has("media")) {
+            tweet.mediaImageUrl = entities.getJSONArray("media").getJSONObject(0).getString("media_url_https");
+        } else
+            tweet.mediaImageUrl = null;
 
         return tweet;
     }
