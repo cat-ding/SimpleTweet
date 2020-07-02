@@ -27,7 +27,7 @@
         android:gravity="start|top"
         android:hint="@string/whats_happening"
         android:inputType="textMultiLine"
-        android:minLines="5" />
+        android:minLines="7" />
 
     <TextView
         android:id="@+id/tvCount"

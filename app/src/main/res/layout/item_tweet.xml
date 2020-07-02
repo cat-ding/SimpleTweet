@@ -34,9 +34,7 @@
         android:layout_marginStart="5dp"
         android:layout_marginTop="3dp"
         android:layout_toEndOf="@+id/ivProfileImage"
-        android:autoLink="all"
-        android:linksClickable="true"
-        tools:text="This is my tweet!" />
+        tools:text="How are we preparing our #Artemis astronauts to explore the surface of the Moon? Beyond safe spacecraft and spacesuits, we’re making sure they have the mobility, tools, and geology training needed to do science. Watch: https://youtu.be/pwHUbftMPvg" />
 
     <TextView
         android:id="@+id/tvRelativeTime"
