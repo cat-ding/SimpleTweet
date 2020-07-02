@@ -7,9 +7,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.codepath.apps.restclienttemplate.databinding.ActivityTweetDetailBinding;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 
 import org.parceler.Parcels;
@@ -23,29 +25,35 @@ public class TweetDetailActivity extends AppCompatActivity {
     TextView tvRelativeTime;
     ImageView ivProfileImage;
     ImageView ivMedia;
+    ImageView btnReply;
     Tweet tweet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tweet_detail);
+
+        // Apply View Binding library
+        ActivityTweetDetailBinding binding = ActivityTweetDetailBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
         tweet = (Tweet) Parcels.unwrap(getIntent().getParcelableExtra(Tweet.class.getSimpleName()));
 
-        tvBody = findViewById(R.id.tvBody);
-        tvScreenName = findViewById(R.id.tvScreenName);
-        tvRelativeTime = findViewById(R.id.tvRelativeTime);
-        ivProfileImage = findViewById(R.id.ivProfileImage);
-        ivMedia = findViewById(R.id.ivMedia);
+        binding.tvBody.setText(tweet.body);
+        binding.tvScreenName.setText("@" + tweet.user.screenName);
+        binding.tvRelativeTime.setText(tweet.relativeTime);
 
-        tvBody.setText(tweet.body);
-        tvScreenName.setText(tweet.user.screenName);
-        tvRelativeTime.setText(tweet.relativeTime);
-
-        Glide.with(this).load(tweet.user.profileImageUrl).transform(new RoundedCorners(RADIUS)).into(ivProfileImage);
+        Glide.with(this).load(tweet.user.profileImageUrl).circleCrop().into(binding.ivProfileImage);
         if (tweet.mediaImageUrl != null)
-            Glide.with(this).load(tweet.mediaImageUrl).transform(new RoundedCorners(RADIUS)).into(ivMedia);
+            Glide.with(this).load(tweet.mediaImageUrl).transform(new RoundedCorners(RADIUS)).into(binding.ivMedia);
         else
-            ivMedia.setVisibility(View.GONE);
+            binding.ivMedia.setVisibility(View.GONE);
+
+        binding.btnReply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(TweetDetailActivity.this, "clicked reply!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

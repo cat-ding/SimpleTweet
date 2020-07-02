@@ -2,9 +2,20 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar"/>
+
+    <item
+        android:id="@+id/twitterIcon"
+        android:icon="@drawable/ic_launcher_twitter"
+        android:title="Icon"
+        app:showAsAction="always" />
+
     <item
         android:id="@+id/compose"
-        android:icon="@android:drawable/ic_menu_edit"
+        android:icon="@drawable/ic_vector_compose"
         android:title="Compose"
         app:showAsAction="always" />
+
 </menu>

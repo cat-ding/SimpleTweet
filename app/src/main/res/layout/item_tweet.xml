@@ -4,7 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp">
+    android:layout_marginStart="15dp"
+    android:layout_marginTop="15dp"
+    android:layout_marginEnd="15dp"
+    android:descendantFocusability="blocksDescendants">
 
     <ImageView
         android:id="@+id/ivProfileImage"
@@ -13,7 +16,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="0dp"
-        android:layout_marginTop="0dp"
+        android:layout_marginTop="5dp"
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
@@ -24,6 +27,8 @@
         android:layout_marginStart="5dp"
         android:layout_marginTop="0dp"
         android:layout_toEndOf="@+id/ivProfileImage"
+        android:textSize="16sp"
+        android:textStyle="bold"
         tools:text="cattt28" />
 
     <TextView
@@ -59,14 +64,14 @@
 
     <Button
         android:id="@+id/btnReply"
-        android:layout_width="56dp"
-        android:layout_height="37dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:layout_below="@+id/ivMedia"
         android:layout_alignStart="@+id/tvScreenName"
         android:layout_marginStart="0dp"
-        android:layout_marginTop="0dp"
+        android:layout_marginTop="2dp"
         android:layout_marginBottom="0dp"
-        android:text="Reply"
+        android:background="@drawable/vector_compose_dm_fab"
         android:textSize="9sp" />
 
 </RelativeLayout>
