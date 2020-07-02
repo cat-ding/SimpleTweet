@@ -2,6 +2,7 @@ package com.codepath.apps.restclienttemplate;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -40,8 +41,8 @@ public class TweetDetailActivity extends AppCompatActivity {
         tweet = (Tweet) Parcels.unwrap(getIntent().getParcelableExtra(Tweet.class.getSimpleName()));
 
         binding.tvBody.setText(tweet.body);
-        binding.tvScreenName.setText("@" + tweet.user.screenName);
         binding.tvRelativeTime.setText(tweet.relativeTime);
+        binding.tvScreenName.setText("@" + tweet.user.screenName);
 
         Glide.with(this).load(tweet.user.profileImageUrl).circleCrop().into(binding.ivProfileImage);
         if (tweet.mediaImageUrl != null)
@@ -52,7 +53,10 @@ public class TweetDetailActivity extends AppCompatActivity {
         binding.btnReply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(TweetDetailActivity.this, "clicked reply!", Toast.LENGTH_SHORT).show();
+//                Intent intent = new Intent(TweetDetailActivity.class, ComposeActivity.class);
+//                intent.putExtra("replyScreenName", tvScreenName);
+//                startActivity(intent);
+                Toast.makeText(TweetDetailActivity.this, "clicked on reply!", Toast.LENGTH_SHORT).show();
             }
         });
     }

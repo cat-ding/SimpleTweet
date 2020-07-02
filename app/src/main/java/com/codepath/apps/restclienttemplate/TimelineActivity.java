@@ -117,8 +117,11 @@ public class TimelineActivity extends AppCompatActivity {
         if (item.getItemId() == R.id.compose) {
             // Compose icon has been selected
             // Navigate to compose activity
-            Intent intent = new Intent(this, ComposeActivity.class);
-            startActivityForResult(intent, REQUEST_CODE);
+            ComposeFragment dialog = new ComposeFragment();
+            dialog.show(getSupportFragmentManager(), "ComposeFragment");
+
+//            Intent intent = new Intent(this, ComposeActivity.class);
+//            startActivityForResult(intent, REQUEST_CODE);
             return true;
         }
         return super.onOptionsItemSelected(item);
