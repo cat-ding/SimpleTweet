@@ -2,12 +2,15 @@ package com.codepath.apps.restclienttemplate;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -87,6 +90,27 @@ public class ComposeFragment extends DialogFragment {
         tvCount = view.findViewById(R.id.tvCount);
 
         client = TwitterApp.getRestClient(getContext());
+
+        etCompose.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                int tweetLength = etCompose.getText().toString().length();
+                int charsLeft = MAX_TWEET_LENGTH - tweetLength;
+                if (charsLeft >= 0)
+                    tvCount.setTextColor(Color.BLACK);
+                else
+                    tvCount.setTextColor(Color.RED);
+                String charsLeftMessage = Integer.toString(charsLeft) + " characters left";
+                tvCount.setText(charsLeftMessage);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) { }
+        });
 
         btnTweet.setOnClickListener(new View.OnClickListener() {
             @Override

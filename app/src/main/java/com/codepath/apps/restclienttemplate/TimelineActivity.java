@@ -119,29 +119,11 @@ public class TimelineActivity extends AppCompatActivity implements ComposeFragme
             // Navigate to compose activity
             ComposeFragment dialog = new ComposeFragment();
 
-//            dialog.setTargetFragment(dialog, REQUEST_CODE);
             dialog.show(getSupportFragmentManager(), "ComposeFragment");
 
-//            Intent intent = new Intent(this, ComposeActivity.class);
-//            startActivityForResult(intent, REQUEST_CODE);
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
-            // Get data from intent (the tweet)
-            Tweet tweet = Parcels.unwrap(data.getParcelableExtra("tweet"));
-            // Update recycler view with new tweet
-            // Modify data source of tweets
-            tweets.add(0, tweet);
-            // Update the adapter
-            adapter.notifyItemInserted(0);
-            rvTweets.smoothScrollToPosition(0);
-        }
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void loadMoreData() {
