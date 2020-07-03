@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.annotation.LongDef;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
@@ -49,24 +50,17 @@ public class ComposeFragment extends DialogFragment {
     private Button btnTweet;
     private TextView tvCount;
     private TwitterClient client;
+    private String replyScreenName;
 
     public ComposeFragment() {
         // Required empty public constructor
     }
 
-//    /**
-//     * Use this factory method to create a new instance of
-//     * this fragment using the provided parameters.
-//     *
-//     * @param param1 Parameter 1.
-//     * @param param2 Parameter 2.
-//     * @return A new instance of fragment ComposeFragment.
-//     */
     // TODO: Rename and change types and number of parameters
-    public static ComposeFragment newInstance(Tweet tweet) {
+    public static ComposeFragment newInstance(String screenName) {
         ComposeFragment fragment = new ComposeFragment();
         Bundle args = new Bundle();
-//        args.putString("tweet", tweet);
+        args.putString("screen_name", screenName);
         fragment.setArguments(args);
         return fragment;
     }
@@ -91,6 +85,8 @@ public class ComposeFragment extends DialogFragment {
 
         client = TwitterApp.getRestClient(getContext());
 
+        etCompose.setText(getArguments().getString("screen_name"));
+        updateCharsLeft();
         etCompose.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -98,14 +94,7 @@ public class ComposeFragment extends DialogFragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                int tweetLength = etCompose.getText().toString().length();
-                int charsLeft = MAX_TWEET_LENGTH - tweetLength;
-                if (charsLeft >= 0)
-                    tvCount.setTextColor(Color.BLACK);
-                else
-                    tvCount.setTextColor(Color.RED);
-                String charsLeftMessage = Integer.toString(charsLeft) + " characters left";
-                tvCount.setText(charsLeftMessage);
+                updateCharsLeft();
             }
 
             @Override
@@ -154,6 +143,17 @@ public class ComposeFragment extends DialogFragment {
         });
 
         return view;
+    }
+
+    private void updateCharsLeft() {
+        int tweetLength = etCompose.getText().toString().length();
+        int charsLeft = MAX_TWEET_LENGTH - tweetLength;
+        if (charsLeft >= 0)
+            tvCount.setTextColor(Color.BLACK);
+        else
+            tvCount.setTextColor(Color.RED);
+        String charsLeftMessage = Integer.toString(charsLeft) + " characters left";
+        tvCount.setText(charsLeftMessage);
     }
 
     @Override

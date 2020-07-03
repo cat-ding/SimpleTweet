@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -108,10 +109,14 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             btnReply.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    ComposeFragment dialog = ComposeFragment.newInstance("@" + screenName);
+                    FragmentManager fragmentManager = ((TimelineActivity) context).getSupportFragmentManager();
+                    dialog.show(fragmentManager, "ComposeFragment");
+
                     // intent to go to ComposeActivity
-                    Intent intent = new Intent(context, ComposeActivity.class);
-                    intent.putExtra("replyScreenName", screenName);
-                    context.startActivity(intent);
+//                    Intent intent = new Intent(context, ComposeActivity.class);
+//                    intent.putExtra("replyScreenName", screenName);
+//                    context.startActivity(intent);
                 }
             });
         }

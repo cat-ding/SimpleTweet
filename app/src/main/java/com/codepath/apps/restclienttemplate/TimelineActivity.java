@@ -116,11 +116,9 @@ public class TimelineActivity extends AppCompatActivity implements ComposeFragme
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.compose) {
             // Compose icon has been selected
-            // Navigate to compose activity
+            // Navigate to the compose dialog fragment
             ComposeFragment dialog = new ComposeFragment();
-
             dialog.show(getSupportFragmentManager(), "ComposeFragment");
-
             return true;
         }
         return super.onOptionsItemSelected(item);
