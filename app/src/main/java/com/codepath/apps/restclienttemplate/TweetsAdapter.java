@@ -140,6 +140,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                 @Override
                 public void onClick(View view) {
                     TwitterClient client = TwitterApp.getRestClient(context);
+                    Tweet tweet = tweets.get(getAdapterPosition());
 
                     if ((int) btnFavorite.getTag() == R.drawable.ic_vector_heart_stroke) {
                         client.favoriteTweet(id, new JsonHttpResponseHandler() {
@@ -153,6 +154,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                                 Log.e(TAG, "onFailure: in favoriting!", throwable);
                             }
                         });
+                        tweet.favorited = true;
                         btnFavorite.setImageResource(R.drawable.ic_vector_heart);
                         btnFavorite.setTag(R.drawable.ic_vector_heart);
                     } else {
@@ -167,6 +169,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                                 Log.e(TAG, "onFailure: in unfavoriting!", throwable);
                             }
                         });
+                        tweet.favorited = false;
                         btnFavorite.setImageResource(R.drawable.ic_vector_heart_stroke);
                         btnFavorite.setTag(R.drawable.ic_vector_heart_stroke);
                     }
