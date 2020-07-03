@@ -46,7 +46,7 @@ public class TimelineActivity extends AppCompatActivity implements ComposeFragme
     TweetsAdapter adapter;
     SwipeRefreshLayout swipeContainer;
     EndlessRecyclerViewScrollListener scrollListener;
-    ProgressBar pbProgressBar;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,8 +55,11 @@ public class TimelineActivity extends AppCompatActivity implements ComposeFragme
 
         client = TwitterApp.getRestClient(this);
         tweetDao  = ((TwitterApp) getApplicationContext()).getMyDatabase().tweetDao();
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        progressBar = findViewById(R.id.progressBar);
 
         swipeContainer = findViewById(R.id.swipeContainer);
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -87,6 +90,7 @@ public class TimelineActivity extends AppCompatActivity implements ComposeFragme
             @Override
             public void onLoadMore(int page, int totalItemsCount) {
                 Log.i(TAG, "onLoadMore: " + page);
+                progressBar.setVisibility(View.VISIBLE);
                 loadMoreData();
             }
         };
@@ -165,6 +169,7 @@ public class TimelineActivity extends AppCompatActivity implements ComposeFragme
                     // 3. Append the new data objects to the existing set of items inside the array of items
                     // 4. Notify the adapter of the new items made with `notifyItemRangeInserted()`
                     adapter.addAll(tweets);
+                    progressBar.setVisibility(View.INVISIBLE);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
