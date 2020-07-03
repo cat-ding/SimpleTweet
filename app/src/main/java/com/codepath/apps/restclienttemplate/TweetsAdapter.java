@@ -6,7 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,16 +17,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.codepath.apps.restclienttemplate.models.Tweet;
+import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 
+import org.json.JSONException;
 import org.parceler.Parcels;
 import org.w3c.dom.Text;
 
 import java.util.List;
 
+import okhttp3.Headers;
+
 // RecyclerView.Adapter<TweetsAdapter.ViewHolder>
 public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder> {
 
+    public static final String TAG = "TweetsAdapter";
     public static final int RADIUS = 30;
+
     Context context;
     List<Tweet> tweets;
 
@@ -78,7 +84,8 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         TextView tvScreenName;
         TextView tvRelativeTime;
         ImageView ivMedia;
-        Button btnReply;
+        ImageButton btnReply;
+        ImageButton btnFavorite;
 
         // this itemView represents one row in the recycler view (item_tweet)
         public ViewHolder(@NonNull View itemView) {
@@ -90,12 +97,15 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             tvRelativeTime = itemView.findViewById(R.id.tvRelativeTime);
             ivMedia = itemView.findViewById(R.id.ivMedia);
             btnReply = itemView.findViewById(R.id.btnReply);
+            btnFavorite = itemView.findViewById(R.id.btnFavorite);
 
             itemView.setOnClickListener(this);
         }
 
         public void bind(Tweet tweet) {
             final String screenName = tweet.user.screenName;
+            final long id = tweet.id;
+
             tvBody.setText(tweet.body);
             tvScreenName.setText("@" + screenName);
             tvRelativeTime.setText(tweet.relativeTime);
@@ -112,6 +122,51 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                     ComposeFragment dialog = ComposeFragment.newInstance("@" + screenName);
                     FragmentManager fragmentManager = ((TimelineActivity) context).getSupportFragmentManager();
                     dialog.show(fragmentManager, "ComposeFragment");
+                }
+            });
+
+            if (tweet.favorited) {
+                btnFavorite.setImageResource(R.drawable.ic_vector_heart);
+                btnFavorite.setTag(R.drawable.ic_vector_heart);
+            } else {
+                btnFavorite.setImageResource(R.drawable.ic_vector_heart_stroke);
+                btnFavorite.setTag(R.drawable.ic_vector_heart_stroke);
+            }
+
+            btnFavorite.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    TwitterClient client = TwitterApp.getRestClient(context);
+
+                    if ((int) btnFavorite.getTag() == R.drawable.ic_vector_heart_stroke) {
+                        client.favoriteTweet(id, new JsonHttpResponseHandler() {
+                            @Override
+                            public void onSuccess(int statusCode, Headers headers, JSON json) {
+                                Log.d(TAG, "onSuccess: in favoriting!");
+                            }
+
+                            @Override
+                            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                                Log.e(TAG, "onFailure: in favoriting!", throwable);
+                            }
+                        });
+                        btnFavorite.setImageResource(R.drawable.ic_vector_heart);
+                        btnFavorite.setTag(R.drawable.ic_vector_heart);
+                    } else {
+                        client.unfavoriteTweet(id, new JsonHttpResponseHandler() {
+                            @Override
+                            public void onSuccess(int statusCode, Headers headers, JSON json) {
+                                Log.d(TAG, "onSuccess: in unfavoriting!");
+                            }
+
+                            @Override
+                            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                                Log.e(TAG, "onFailure: in unfavoriting!", throwable);
+                            }
+                        });
+                        btnFavorite.setImageResource(R.drawable.ic_vector_heart_stroke);
+                        btnFavorite.setTag(R.drawable.ic_vector_heart_stroke);
+                    }
                 }
             });
         }

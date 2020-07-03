@@ -36,6 +36,11 @@ public class TwitterClient extends OAuthBaseClient {
 	// API endpoints
 	public static final String HOME_TIMELINE_ENDPOINT = "statuses/home_timeline.json";
 	public static final String UPDATE_ENDPOINT = "statuses/update.json";
+	public static final String FAVORITES_CREATE_ENDPOINT = "favorites/create.json";
+	public static final String FAVORITES_DESTROY_ENDPOINT = "favorites/destroy.json";
+
+	// Other constants
+	public static final int NUM_RECORDS_TO_RETRIEVE = 25;
 
 	public TwitterClient(Context context) {
 		super(context, REST_API_INSTANCE,
@@ -52,7 +57,7 @@ public class TwitterClient extends OAuthBaseClient {
 		String apiUrl = getApiUrl(HOME_TIMELINE_ENDPOINT);
 		// Can specify query string params directly or through RequestParams.
 		RequestParams params = new RequestParams();
-		params.put("count", 25);
+		params.put("count", NUM_RECORDS_TO_RETRIEVE);
 		params.put("since_id", 1);
 		client.get(apiUrl, params, handler);
 	}
@@ -61,7 +66,7 @@ public class TwitterClient extends OAuthBaseClient {
 		String apiUrl = getApiUrl(HOME_TIMELINE_ENDPOINT);
 		// Can specify query string params directly or through RequestParams.
 		RequestParams params = new RequestParams();
-		params.put("count", 25);
+		params.put("count", NUM_RECORDS_TO_RETRIEVE);
 		params.put("max_id", maxId);
 		client.get(apiUrl, params, handler);
 	}
@@ -71,6 +76,20 @@ public class TwitterClient extends OAuthBaseClient {
 		// Can specify query string params directly or through RequestParams.
 		RequestParams params = new RequestParams();
 		params.put("status", tweetContent);
+		client.post(apiUrl, params, "", handler);
+	}
+
+	public void favoriteTweet(long id, JsonHttpResponseHandler handler) {
+		String apiUrl = getApiUrl(FAVORITES_CREATE_ENDPOINT);
+		RequestParams params = new RequestParams();
+		params.put("id", id);
+		client.post(apiUrl, params, "", handler);
+	}
+
+	public void unfavoriteTweet(long id, JsonHttpResponseHandler handler) {
+		String apiUrl = getApiUrl(FAVORITES_DESTROY_ENDPOINT);
+		RequestParams params = new RequestParams();
+		params.put("id", id);
 		client.post(apiUrl, params, "", handler);
 	}
 
