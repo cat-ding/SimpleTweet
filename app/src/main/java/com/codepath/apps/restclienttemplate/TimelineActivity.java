@@ -32,7 +32,7 @@ import java.util.List;
 
 import okhttp3.Headers;
 
-public class TimelineActivity extends AppCompatActivity {
+public class TimelineActivity extends AppCompatActivity implements ComposeFragment.OnFinishEditDialog {
 
     public static final String TAG = "TimelineActivity";
     private final int REQUEST_CODE = 20;
@@ -118,6 +118,8 @@ public class TimelineActivity extends AppCompatActivity {
             // Compose icon has been selected
             // Navigate to compose activity
             ComposeFragment dialog = new ComposeFragment();
+
+//            dialog.setTargetFragment(dialog, REQUEST_CODE);
             dialog.show(getSupportFragmentManager(), "ComposeFragment");
 
 //            Intent intent = new Intent(this, ComposeActivity.class);
@@ -201,5 +203,13 @@ public class TimelineActivity extends AppCompatActivity {
                 Log.e(TAG, "onFailure! " + response, throwable);
             }
         });
+    }
+
+    @Override
+    public void sendTweet(Tweet tweet) {
+        tweets.add(0, tweet);
+        // Update the adapter
+        adapter.notifyItemInserted(0);
+        rvTweets.smoothScrollToPosition(0);
     }
 }
