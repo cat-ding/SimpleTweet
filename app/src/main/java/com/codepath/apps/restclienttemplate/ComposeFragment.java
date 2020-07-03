@@ -74,6 +74,7 @@ public class ComposeFragment extends DialogFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_compose, container, false);
+
         etCompose = view.findViewById(R.id.etCompose);
         btnTweet = view.findViewById(R.id.btnTweet);
         tvCount = view.findViewById(R.id.tvCount);

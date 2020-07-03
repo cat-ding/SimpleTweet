@@ -19,6 +19,8 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.codepath.apps.restclienttemplate.databinding.ActivityTimelineBinding;
+import com.codepath.apps.restclienttemplate.databinding.ActivityTweetDetailBinding;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.apps.restclienttemplate.models.TweetDao;
 import com.codepath.apps.restclienttemplate.models.TweetWithUser;
@@ -51,7 +53,12 @@ public class TimelineActivity extends AppCompatActivity implements ComposeFragme
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_timeline);
+//        setContentView(R.layout.activity_timeline);
+
+        // Apply View Binding library
+        final ActivityTimelineBinding binding = ActivityTimelineBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
         client = TwitterApp.getRestClient(this);
         tweetDao  = ((TwitterApp) getApplicationContext()).getMyDatabase().tweetDao();
@@ -59,10 +66,12 @@ public class TimelineActivity extends AppCompatActivity implements ComposeFragme
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        progressBar = findViewById(R.id.progressBar);
+//        progressBar = findViewById(R.id.progressBar);
+        progressBar = binding.progressBar;
 
-        swipeContainer = findViewById(R.id.swipeContainer);
-        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//        swipeContainer = findViewById(R.id.swipeContainer);
+        swipeContainer = binding.swipeContainer;
+        binding.swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 Log.i(TAG, "fetching new data!");
@@ -71,20 +80,21 @@ public class TimelineActivity extends AppCompatActivity implements ComposeFragme
         });
 
         // Configure the refreshing colors
-        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+        binding.swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light,
                 android.R. color.holo_orange_light,
                 android.R.color.holo_red_light);
 
         // Find the recycler view
-        rvTweets = findViewById(R.id.rvTweets);
+        rvTweets = binding.rvTweets;
+//        rvTweets = findViewById(R.id.rvTweets);
         // Init the list of tweets and the adapter
         tweets = new ArrayList<>();
         adapter = new TweetsAdapter(this, tweets);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         // Recycler view set up: layout manager and the adapter
-        rvTweets.setLayoutManager(layoutManager);
-        rvTweets.setAdapter(adapter);
+        binding.rvTweets.setLayoutManager(layoutManager);
+        binding.rvTweets.setAdapter(adapter);
 
         scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
@@ -95,7 +105,7 @@ public class TimelineActivity extends AppCompatActivity implements ComposeFragme
             }
         };
         // Adds the scroll listener to RecyclerView
-        rvTweets.addOnScrollListener(scrollListener);
+        binding.rvTweets.addOnScrollListener(scrollListener);
 
         // Query for existing tweets in the DB
         AsyncTask.execute(new Runnable() {
@@ -105,9 +115,11 @@ public class TimelineActivity extends AppCompatActivity implements ComposeFragme
                 List <Tweet> tweetsFromDB = TweetWithUser.getTweetList(tweetDao.recentItems());
                 adapter.clear();
                 adapter.addAll(tweetsFromDB);
+                progressBar.setVisibility(View.INVISIBLE);
             }
         });
 
+        binding.progressBar.setVisibility(View.VISIBLE);
         populateHomeTimeline();
     }
 
@@ -178,6 +190,7 @@ public class TimelineActivity extends AppCompatActivity implements ComposeFragme
             @Override
             public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
                 Log.e (TAG, "onFailure for loadMoreData!", throwable);
+                progressBar.setVisibility(View.INVISIBLE);
             }
         }, tweets.get(tweets.size() - 1).id);
     }
@@ -194,6 +207,7 @@ public class TimelineActivity extends AppCompatActivity implements ComposeFragme
                     adapter.addAll(tweetsFromNetwork);
                     // Signal refresh has finished
                     swipeContainer.setRefreshing(false);
+                    progressBar.setVisibility(View.INVISIBLE);
 
                     AsyncTask.execute(new Runnable() {
                         @Override
