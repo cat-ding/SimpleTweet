@@ -100,8 +100,6 @@ public class ComposeFragment extends DialogFragment {
         btnTweet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "TWEEET", Toast.LENGTH_SHORT).show();
-
                 String tweetContent = etCompose.getText().toString();
                 // Error handling first
                 if (tweetContent.isEmpty()) {
