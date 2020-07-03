@@ -12,9 +12,11 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/etCompose"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="-5dp"
+        android:layout_marginTop="-8dp"
         android:layout_marginEnd="10dp"
-        android:text="@string/tweet" />
+        android:backgroundTint="#1DA1F2"
+        android:text="@string/tweet"
+        android:textColor="#FFFFFF" />
 
     <EditText
         android:id="@+id/etCompose"
