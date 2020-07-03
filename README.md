@@ -41,7 +41,7 @@ The following **stretch** features are implemented:
 
 The following **additional** features are implemented:
 
-* [ ] If the favorite status is changed in either the Timeline or Details activity, the status will also be changed in the other.
+* [x] If the favorite status is changed in either the Timeline or Details activity, the status will also be changed in the other.
 
 ## Video Walkthrough
 
@@ -54,6 +54,8 @@ GIF created with [Kap](https://getkap.co/).
 ## Notes
 
 Describe any challenges encountered while building the app.
+* Understanding how fragments worked took awhile, especially understand how data can be passed between fragments and activities.
+* Haven't implemented the followers/following feature yet, but will try to do so when I have free time - started using fragments for this feature to practice the concept.
 
 ## Open-source libraries used
 
