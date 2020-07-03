@@ -1,5 +1,6 @@
 package com.codepath.apps.restclienttemplate;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -32,6 +33,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
 
     public static final String TAG = "TweetsAdapter";
     public static final int RADIUS = 30;
+    public static final int REQUEST_CODE = 40;
 
     Context context;
     List<Tweet> tweets;
@@ -125,6 +127,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                 }
             });
 
+            // setting heart icon
             if (tweet.favorited) {
                 btnFavorite.setImageResource(R.drawable.ic_vector_heart);
                 btnFavorite.setTag(R.drawable.ic_vector_heart);
@@ -184,9 +187,10 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                 // create intent for the new activity
                 Intent intent = new Intent(context, TweetDetailActivity.class);
                 // serialize the tweet using parceler, use its short name as a key
+                intent.putExtra("adapterPosition", getAdapterPosition());
                 intent.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
                 // show the activity
-                context.startActivity(intent);
+                ((TimelineActivity) context).startActivityForResult(intent, REQUEST_CODE);
             }
         }
     }

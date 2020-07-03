@@ -93,6 +93,7 @@ public class TweetDetailActivity extends AppCompatActivity {
                             Log.e(TAG, "onFailure: in favoriting!", throwable);
                         }
                     });
+                    tweet.favorited = true;
                     binding.btnFavorite.setImageResource(R.drawable.ic_vector_heart);
                     binding.btnFavorite.setTag(R.drawable.ic_vector_heart);
                 } else {
@@ -107,10 +108,20 @@ public class TweetDetailActivity extends AppCompatActivity {
                             Log.e(TAG, "onFailure: in unfavoriting!", throwable);
                         }
                     });
+                    tweet.favorited = false;
                     binding.btnFavorite.setImageResource(R.drawable.ic_vector_heart_stroke);
                     binding.btnFavorite.setTag(R.drawable.ic_vector_heart_stroke);
                 }
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        // transmitting tweet object back to TimelineActivity
+        Intent intent = new Intent();
+        intent.putExtra("updatedTweet", Parcels.wrap(tweet));
+        setResult(RESULT_OK, intent);
+        super.onBackPressed();
     }
 }

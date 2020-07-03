@@ -11,6 +11,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -36,7 +37,7 @@ import okhttp3.Headers;
 public class TimelineActivity extends AppCompatActivity implements ComposeFragment.OnFinishEditDialog {
 
     public static final String TAG = "TimelineActivity";
-    private final int REQUEST_CODE = 20;
+    private final int REQUEST_CODE = 40;
 
     TweetDao tweetDao;
     TwitterClient client;
@@ -111,6 +112,32 @@ public class TimelineActivity extends AppCompatActivity implements ComposeFragme
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // coming back from TweetDetailActivity
+        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
+            Parcelable updatedTweetParcel = data.getParcelableExtra("updatedTweet");
+
+            if (updatedTweetParcel != null) {
+                Tweet updatedTweet = Parcels.unwrap(updatedTweetParcel);
+
+                // find adapter position (where the tweet was)
+                int position = -1;
+                for (int i = 0; i < tweets.size(); i++) {
+                    if (tweets.get(i).id == updatedTweet.id) {
+                        position = i;
+                        break;
+                    }
+                }
+                tweets.remove(position);
+                tweets.add(position, updatedTweet);
+                adapter.notifyItemChanged(position);
+            }
+        }
     }
 
     @Override
