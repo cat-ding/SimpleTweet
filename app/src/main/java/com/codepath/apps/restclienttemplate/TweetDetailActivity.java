@@ -1,6 +1,7 @@
 package com.codepath.apps.restclienttemplate;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -53,10 +54,8 @@ public class TweetDetailActivity extends AppCompatActivity {
         binding.btnReply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(TweetDetailActivity.class, ComposeActivity.class);
-//                intent.putExtra("replyScreenName", tvScreenName);
-//                startActivity(intent);
-                Toast.makeText(TweetDetailActivity.this, "clicked on reply!", Toast.LENGTH_SHORT).show();
+                ComposeFragment dialog = ComposeFragment.newInstance("@" + tweet.user.screenName);
+                dialog.show(getSupportFragmentManager(), "ComposeFragment");
             }
         });
     }

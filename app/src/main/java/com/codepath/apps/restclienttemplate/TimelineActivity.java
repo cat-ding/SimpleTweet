@@ -3,6 +3,7 @@ package com.codepath.apps.restclienttemplate;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -117,7 +118,7 @@ public class TimelineActivity extends AppCompatActivity implements ComposeFragme
         if (item.getItemId() == R.id.compose) {
             // Compose icon has been selected
             // Navigate to the compose dialog fragment
-            ComposeFragment dialog = new ComposeFragment();
+            ComposeFragment dialog = ComposeFragment.newInstance("");
             dialog.show(getSupportFragmentManager(), "ComposeFragment");
             return true;
         }

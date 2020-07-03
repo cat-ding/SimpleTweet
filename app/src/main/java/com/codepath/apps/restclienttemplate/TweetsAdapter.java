@@ -112,11 +112,6 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                     ComposeFragment dialog = ComposeFragment.newInstance("@" + screenName);
                     FragmentManager fragmentManager = ((TimelineActivity) context).getSupportFragmentManager();
                     dialog.show(fragmentManager, "ComposeFragment");
-
-                    // intent to go to ComposeActivity
-//                    Intent intent = new Intent(context, ComposeActivity.class);
-//                    intent.putExtra("replyScreenName", screenName);
-//                    context.startActivity(intent);
                 }
             });
         }

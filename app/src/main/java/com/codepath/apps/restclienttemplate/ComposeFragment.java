@@ -56,7 +56,6 @@ public class ComposeFragment extends DialogFragment {
         // Required empty public constructor
     }
 
-    // TODO: Rename and change types and number of parameters
     public static ComposeFragment newInstance(String screenName) {
         ComposeFragment fragment = new ComposeFragment();
         Bundle args = new Bundle();
@@ -68,10 +67,6 @@ public class ComposeFragment extends DialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        if (getArguments() != null) {
-//            mParam1 = getArguments().getString(ARG_PARAM1);
-//            mParam2 = getArguments().getString(ARG_PARAM2);
-//        }
     }
 
     @Override
