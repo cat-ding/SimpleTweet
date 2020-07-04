@@ -35,7 +35,6 @@ public class TweetDetailActivity extends AppCompatActivity {
     ImageButton btnReply;
     ImageButton btnRetweet;
     ImageButton btnFavorite;
-    ImageButton btnShare;
     long id;
     Tweet tweet;
 
@@ -61,6 +60,14 @@ public class TweetDetailActivity extends AppCompatActivity {
         } else {
             binding.btnFavorite.setImageResource(R.drawable.ic_vector_heart_stroke);
             binding.btnFavorite.setTag(R.drawable.ic_vector_heart_stroke);
+        }
+
+        if (tweet.retweeted) {
+            binding.btnRetweet.setImageResource(R.drawable.ic_vector_retweet);
+            binding.btnRetweet.setTag(R.drawable.ic_vector_retweet);
+        } else {
+            binding.btnRetweet.setImageResource(R.drawable.ic_vector_retweet_stroke);
+            binding.btnRetweet.setTag(R.drawable.ic_vector_retweet_stroke);
         }
 
         Glide.with(this).load(tweet.user.profileImageUrl).circleCrop().into(binding.ivProfileImage);
@@ -111,6 +118,44 @@ public class TweetDetailActivity extends AppCompatActivity {
                     tweet.favorited = false;
                     binding.btnFavorite.setImageResource(R.drawable.ic_vector_heart_stroke);
                     binding.btnFavorite.setTag(R.drawable.ic_vector_heart_stroke);
+                }
+            }
+        });
+
+        binding.btnRetweet.setOnClickListener(new View.OnClickListener() {
+            TwitterClient client = TwitterApp.getRestClient(getApplicationContext());
+            @Override
+            public void onClick(View view) {
+                if ((int) binding.btnRetweet.getTag() == R.drawable.ic_vector_retweet_stroke) {
+                    client.retweetTweet(id, new JsonHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, Headers headers, JSON json) {
+                            Log.d(TAG, "onSuccess: in retweeting!");
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                            Log.e(TAG, "onFailure: in retweeting!", throwable);
+                        }
+                    });
+                    tweet.retweeted = true;
+                    binding.btnRetweet.setImageResource(R.drawable.ic_vector_retweet);
+                    binding.btnRetweet.setTag(R.drawable.ic_vector_retweet);
+                } else {
+                    client.unretweetTweet(id, new JsonHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, Headers headers, JSON json) {
+                            Log.d(TAG, "onSuccess: in unretweeting!");
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                            Log.e(TAG, "onFailure: in unretweeting!", throwable);
+                        }
+                    });
+                    tweet.retweeted = false;
+                    binding.btnRetweet.setImageResource(R.drawable.ic_vector_retweet_stroke);
+                    binding.btnRetweet.setTag(R.drawable.ic_vector_retweet_stroke);
                 }
             }
         });

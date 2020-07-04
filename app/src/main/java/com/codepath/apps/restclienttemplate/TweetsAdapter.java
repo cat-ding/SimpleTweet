@@ -3,6 +3,7 @@ package com.codepath.apps.restclienttemplate;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -88,6 +89,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         ImageView ivMedia;
         ImageButton btnReply;
         ImageButton btnFavorite;
+        ImageButton btnRetweet;
 
         // this itemView represents one row in the recycler view (item_tweet)
         public ViewHolder(@NonNull View itemView) {
@@ -100,6 +102,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             ivMedia = itemView.findViewById(R.id.ivMedia);
             btnReply = itemView.findViewById(R.id.btnReply);
             btnFavorite = itemView.findViewById(R.id.btnFavorite);
+            btnRetweet = itemView.findViewById(R.id.btnRetweet);
 
             itemView.setOnClickListener(this);
         }
@@ -134,6 +137,14 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             } else {
                 btnFavorite.setImageResource(R.drawable.ic_vector_heart_stroke);
                 btnFavorite.setTag(R.drawable.ic_vector_heart_stroke);
+            }
+
+            if (tweet.retweeted) {
+                btnRetweet.setImageResource(R.drawable.ic_vector_retweet);
+                btnRetweet.setTag(R.drawable.ic_vector_retweet);
+            } else {
+                btnRetweet.setImageResource(R.drawable.ic_vector_retweet_stroke);
+                btnRetweet.setTag(R.drawable.ic_vector_retweet_stroke);
             }
 
             btnFavorite.setOnClickListener(new View.OnClickListener() {
@@ -172,6 +183,46 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                         tweet.favorited = false;
                         btnFavorite.setImageResource(R.drawable.ic_vector_heart_stroke);
                         btnFavorite.setTag(R.drawable.ic_vector_heart_stroke);
+                    }
+                }
+            });
+
+            btnRetweet.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    TwitterClient client = TwitterApp.getRestClient(context);
+                    Tweet tweet = tweets.get(getAdapterPosition());
+
+                    if ((int) btnRetweet.getTag() == R.drawable.ic_vector_retweet_stroke) {
+                        client.retweetTweet(id, new JsonHttpResponseHandler() {
+                            @Override
+                            public void onSuccess(int statusCode, Headers headers, JSON json) {
+                                Log.d(TAG, "onSuccess: in retweeting!");
+                            }
+
+                            @Override
+                            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                                Log.e(TAG, "onFailure: in retweeting!", throwable);
+                            }
+                        });
+                        tweet.retweeted = true;
+                        btnRetweet.setImageResource(R.drawable.ic_vector_retweet);
+                        btnRetweet.setTag(R.drawable.ic_vector_retweet);
+                    } else {
+                        client.unretweetTweet(id, new JsonHttpResponseHandler() {
+                            @Override
+                            public void onSuccess(int statusCode, Headers headers, JSON json) {
+                                Log.d(TAG, "onSuccess: in unretweeting!");
+                            }
+
+                            @Override
+                            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                                Log.e(TAG, "onFailure: in unretweeting!", throwable);
+                            }
+                        });
+                        tweet.retweeted = false;
+                        btnRetweet.setImageResource(R.drawable.ic_vector_retweet_stroke);
+                        btnRetweet.setTag(R.drawable.ic_vector_retweet_stroke);
                     }
                 }
             });

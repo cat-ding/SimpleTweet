@@ -1,6 +1,7 @@
 package com.codepath.apps.restclienttemplate;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.codepath.asynchttpclient.RequestParams;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
@@ -38,6 +39,8 @@ public class TwitterClient extends OAuthBaseClient {
 	public static final String UPDATE_ENDPOINT = "statuses/update.json";
 	public static final String FAVORITES_CREATE_ENDPOINT = "favorites/create.json";
 	public static final String FAVORITES_DESTROY_ENDPOINT = "favorites/destroy.json";
+	public static final String RETWEET_ENDPOINT = "statuses/retweet/";
+	public static final String UNRETWEET_ENDPOINT = "statuses/unretweet/";
 
 	// Other constants
 	public static final int NUM_RECORDS_TO_RETRIEVE = 25;
@@ -88,6 +91,24 @@ public class TwitterClient extends OAuthBaseClient {
 
 	public void unfavoriteTweet(long id, JsonHttpResponseHandler handler) {
 		String apiUrl = getApiUrl(FAVORITES_DESTROY_ENDPOINT);
+		RequestParams params = new RequestParams();
+		params.put("id", id);
+		client.post(apiUrl, params, "", handler);
+	}
+
+	public void retweetTweet(long id, JsonHttpResponseHandler handler) {
+		String apiUrl = getApiUrl(RETWEET_ENDPOINT);
+		apiUrl = apiUrl + id + ".json";
+		Log.d("HERE", "id: " + id);
+		Log.d("HERE", "apiUrl: " + apiUrl);
+		RequestParams params = new RequestParams();
+		params.put("id", id);
+		client.post(apiUrl, params, "", handler);
+	}
+
+	public void unretweetTweet(long id, JsonHttpResponseHandler handler) {
+		String apiUrl = getApiUrl(UNRETWEET_ENDPOINT);
+		apiUrl = apiUrl + id + ".json";
 		RequestParams params = new RequestParams();
 		params.put("id", id);
 		client.post(apiUrl, params, "", handler);

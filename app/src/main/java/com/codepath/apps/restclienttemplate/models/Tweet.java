@@ -45,6 +45,9 @@ public class Tweet {
     @ColumnInfo
     public boolean favorited;
 
+    @ColumnInfo
+    public boolean retweeted;
+
     @Ignore
     public User user;
 
@@ -59,6 +62,7 @@ public class Tweet {
         tweet.id = jsonObject.getLong("id");
         tweet.relativeTime = getRelativeTimeAgo(jsonObject.getString("created_at"));
         tweet.favorited = jsonObject.getBoolean("favorited");
+        tweet.retweeted = jsonObject.getBoolean("retweeted");
         User user = User.fromJSON(jsonObject.getJSONObject("user"));
         tweet.user = user;
         tweet.userId = user.id;
