@@ -41,6 +41,8 @@ public class TwitterClient extends OAuthBaseClient {
 	public static final String FAVORITES_DESTROY_ENDPOINT = "favorites/destroy.json";
 	public static final String RETWEET_ENDPOINT = "statuses/retweet/";
 	public static final String UNRETWEET_ENDPOINT = "statuses/unretweet/";
+	private static final String FOLLOWERS_ENDPOINT = "followers/list.json";
+	private static final String FRIENDS_ENDPOINT = "friends/list.json";
 
 	// Other constants
 	public static final int NUM_RECORDS_TO_RETRIEVE = 25;
@@ -71,6 +73,22 @@ public class TwitterClient extends OAuthBaseClient {
 		RequestParams params = new RequestParams();
 		params.put("count", NUM_RECORDS_TO_RETRIEVE);
 		params.put("max_id", maxId);
+		client.get(apiUrl, params, handler);
+	}
+
+	public void getFollowers(long id, JsonHttpResponseHandler handler) {
+		String apiUrl = getApiUrl(FOLLOWERS_ENDPOINT);
+		RequestParams params = new RequestParams();
+		params.put("id", id);
+		params.put("count", NUM_RECORDS_TO_RETRIEVE);
+		client.get(apiUrl, params, handler);
+	}
+
+	public void getFriends(long id, JsonHttpResponseHandler handler) {
+		String apiUrl = getApiUrl(FRIENDS_ENDPOINT);
+		RequestParams params = new RequestParams();
+		params.put("id", id);
+		params.put("count", NUM_RECORDS_TO_RETRIEVE);
 		client.get(apiUrl, params, handler);
 	}
 

@@ -30,7 +30,6 @@ import java.util.List;
 
 import okhttp3.Headers;
 
-// RecyclerView.Adapter<TweetsAdapter.ViewHolder>
 public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder> {
 
     public static final String TAG = "TweetsAdapter";
