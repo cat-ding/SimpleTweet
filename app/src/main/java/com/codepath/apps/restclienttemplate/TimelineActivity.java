@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -26,6 +27,7 @@ import com.codepath.apps.restclienttemplate.models.TweetDao;
 import com.codepath.apps.restclienttemplate.models.TweetWithUser;
 import com.codepath.apps.restclienttemplate.models.User;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
+import com.google.android.material.tabs.TabLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -53,7 +55,6 @@ public class TimelineActivity extends AppCompatActivity implements ComposeFragme
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_timeline);
 
         // Apply View Binding library
         final ActivityTimelineBinding binding = ActivityTimelineBinding.inflate(getLayoutInflater());
@@ -66,10 +67,8 @@ public class TimelineActivity extends AppCompatActivity implements ComposeFragme
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-//        progressBar = findViewById(R.id.progressBar);
         progressBar = binding.progressBar;
 
-//        swipeContainer = findViewById(R.id.swipeContainer);
         swipeContainer = binding.swipeContainer;
         binding.swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -87,7 +86,7 @@ public class TimelineActivity extends AppCompatActivity implements ComposeFragme
 
         // Find the recycler view
         rvTweets = binding.rvTweets;
-//        rvTweets = findViewById(R.id.rvTweets);
+
         // Init the list of tweets and the adapter
         tweets = new ArrayList<>();
         adapter = new TweetsAdapter(this, tweets);

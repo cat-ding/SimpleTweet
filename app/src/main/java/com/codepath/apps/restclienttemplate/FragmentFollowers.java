@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-public class FragmentFollowers extends Fragment {
+public class  FragmentFollowers extends Fragment {
 
     View view;
 
